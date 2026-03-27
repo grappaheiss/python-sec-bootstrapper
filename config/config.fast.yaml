@@ -1,0 +1,100 @@
+execution:
+  phase: server
+  stage: stage1
+  dry_run: true
+  auto_rollback: true
+  log_level: INFO
+
+target:
+  host: localhost
+  port: 22
+  user: root
+
+security:
+  ssh:
+    port: 2222
+    password_auth: false
+    root_login: false
+    max_auth_tries: 3
+    grace_time: 30
+    allowed_users: [chad]
+    bootstrap_keys:
+      - name: id_ed25519_bootstrap_1
+        key_type: ed25519
+      - name: id_ed25519_bootstrap_2
+        key_type: ed25519
+      - name: id_rsa_bootstrap_1
+        key_type: rsa
+        bits: 4096
+      - name: id_rsa_bootstrap_2
+        key_type: rsa
+        bits: 4096
+  firewall:
+    enabled: true
+    ipv6: false
+    incoming_policy: deny
+    outgoing_policy: allow
+  fail2ban:
+    enabled: true
+    port: 2222
+    maxretry: 3
+    bantime: 1h
+    findtime: 10m
+  auto_updates:
+    enabled: true
+
+system:
+  timezone: UTC
+  entropy_daemon: true
+
+tailscale:
+  enabled: false
+
+docker:
+  enabled: true
+  userns_remap: true
+  gvisor: false
+  base_pool_cidr: 10.203.55.0/24
+  pool_slice_size: 28
+  image_cache_root: /tools/dockerimages
+  image_cache_manifest: /tools/dockerimages/manifest.json
+  image_cache_enabled: true
+  image_allow_refresh: true
+  image_refresh_ttl_hours: 24
+
+optional:
+  tailscale: false
+  docker: true
+
+modules:
+  fail2ban: true
+  unattended_upgrades: true
+  system_hardening: true
+  tailscale: false
+  dev_runtime_tools: true
+  docker_prereq: true
+  firejail: true
+  clamav: false
+  rkhunter: false
+  lynis: false
+  docker_baseline: true
+  docker_ai_validation: false
+
+ai_frameworks:
+  install: none
+  openclaw: {install_daemon: true, dev_mode: false}
+  opencode: {version: latest}
+  claude: {method: claude-code}
+  vscode: {extensions: []}
+
+stage_gate:
+  state_file: ${HOME}/minidev/codex-tasks/outbox/T-022/artifacts/stage_gate_state.fast.json
+
+tool_cache:
+  cache_root: /tools
+  fallback_root: ${HOME}/minidev/codex-tasks/outbox/T-022/artifacts/tool_cache
+  manifest_file: ${HOME}/minidev/codex-tasks/outbox/T-022/config/tools_manifest.yaml
+  allow_download: true
+
+metadata:
+  owner: T-022-fast

@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.venv_*/
+venv/
+artifacts/manifest.jsonl
+artifacts/stage_gate_state*.json
+artifacts/tool_cache/
