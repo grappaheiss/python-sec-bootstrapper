@@ -5,6 +5,8 @@ Linux hardening bootstrapper with staged execution, rollback tracking, Docker ba
 Repo name is `python-sec-bootstrapper`.
 Python package and CLI name are `sec-bootstrapper`.
 
+![python-sec-bootstrapper hero](assets/github_python_bootstrapper.png)
+
 ## Snapshot
 
 | Item | Value |
